@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swimming Pools in São Paulo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Instrument Serif', serif;
+            background: white;
+            color: black;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        #landing-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+
+        #landing-page h1 {
+            font-size: 64px;
+            font-weight: 400;
+            margin-bottom: 40px;
+            line-height: 1.2;
+            max-width: 800px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #guess-input {
+            font-family: 'Instrument Serif', serif;
+            font-size: 48px;
+            width: 300px;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 2px solid black;
+            background: white;
+            text-align: center;
+        }
+
+        #guess-input:focus {
+            outline: none;
+            border-bottom: 2px solid black;
+        }
+
+        /* Remove number input spinners */
+        #guess-input::-webkit-outer-spin-button,
+        #guess-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        #guess-input[type=number] {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+
+        #submit-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        #submit-btn.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #submit-btn.enabled:hover {
+            opacity: 0.8;
+        }
+
+        #results-page {
+            display: none;
+            width: 100%;
+            max-width: 1400px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #result-message {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 100px;
+            margin-bottom: 60px;
+            justify-content: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 72px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .stat-number sup {
+            font-size: 0.5em;
+            vertical-align: super;
+        }
+
+        .stat-label {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        #map {
+            width: 90%;
+            height: 600px;
+            border: 2px solid black;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 80px;
+        }
+
+        .info-section {
+            width: 90%;
+            max-width: 800px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .info-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .info-section a {
+            color: black;
+            text-decoration: underline;
+        }
+
+        .info-section a:hover {
+            opacity: 0.7;
+        }
+
+        /* Desaturate map tiles for minimal look */
+        .map-tiles {
+            filter: grayscale(100%) contrast(0.8) brightness(1.1);
+        }
+
+        /* Desaturate map tiles for minimal look */
+        .map-tiles {
+            filter: grayscale(100%) contrast(0.8) brightness(1.1);
+        }
+
+        @media (max-width: 768px) {
+            #landing-page h1 {
+                font-size: 36px;
+            }
+
+            .input-container {
+                gap: 15px;
+            }
+
+            #guess-input {
+                font-size: 32px;
+                width: 200px;
+            }
+
+            #submit-btn {
+                width: 50px;
+                height: 50px;
+                min-width: 50px;
+                font-size: 20px;
+                flex-shrink: 0;
+            }
+
+            #result-message {
+                font-size: 28px;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .stat-number {
+                font-size: 48px;
+            }
+
+            .stat-label {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="landing-page">
+        <h1 id="landing-title">guess the number of swimming pools in São Paulo</h1>
+        <div class="input-container">
+            <input type="number" id="guess-input" placeholder="0" min="0">
+            <button id="submit-btn">→</button>
+        </div>
+    </div>
+
+    <div id="results-page">
+        <div id="result-message"></div>
+        
+        <div class="stats-container">
+            <div class="stat">
+                <div class="stat-number" id="pool-count-number">53,216</div>
+                <div class="stat-label" id="pool-count-label">swimming pools in São Paulo</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="pool-area-number">1.49 km<sup>2</sup></div>
+                <div class="stat-label" id="pool-area-label">total pool area</div>
+            </div>
+        </div>
+
+        <div id="map">
+            <iframe 
+                id="map-iframe" 
+                src="heatmap.html" 
+                style="width: 100%; height: 100%; border: none;"
+                title="Pool Density Map">
+            </iframe>
+        </div>
+
+        <div class="info-section">
+            <h2 id="confidence-title">confidence interval</h2>
+            <p id="confidence-interval">95% CI: [50,555 – 56,173]</p>
+        </div>
+
+        <div class="info-section">
+            <h2 id="methodology-title">methodology</h2>
+            <p id="methodology-text">Pools were counted using aerial imagery from GeoSampa with a custom-trained YOLO11 segmentation model. The images are from 2020. This count includes only outdoor pools visible from above, within the municipality of São Paulo.</p>
+        </div>
+
+        <div class="info-section">
+            <h2 id="sayhi-title">say hi</h2>
+            <p><a href="https://twitter.com/rafa_b_g" target="_blank">@rafa_b_g</a> • <a href="mailto:rafa.b.g@icloud.com">rafa.b.g@icloud.com</a></p>
+        </div>
+    </div>
+
+    <script>
+        const ACTUAL_COUNT = 53216;
+        const guessInput = document.getElementById('guess-input');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Detect user language
+        const userLang = navigator.language || navigator.userLanguage;
+        const isPortuguese = userLang.toLowerCase().startsWith('pt');
+        const locale = isPortuguese ? 'pt-BR' : 'en-US';
+
+        // Translations
+        const translations = {
+            en: {
+                title: "guess the number of swimming pools in São Paulo",
+                placeholder: "0",
+                exactMatch: "exactly!",
+                offBy: (n) => `you were off by ${n.toLocaleString('en-US')} pools`,
+                poolCount: "swimming pools in São Paulo",
+                poolArea: "total pool area",
+                confidenceTitle: "confidence interval",
+                confidenceInterval: "95%: [50555, 56173]",
+                methodologyTitle: "methodology",
+                methodologyText: "Pools were counted using aerial imagery from GeoSampa with a custom-trained YOLO11 segmentation model. The images are from 2020. This count includes only outdoor pools visible from above, within the municipality of São Paulo.",
+                sayHiTitle: "say hi!",
+                invalidNumber: "Please enter a valid number",
+                poolCountNumber: "53,216",
+                poolAreaNumber: "1.49"
+            },
+            pt: {
+                title: "quantas piscinas tem em São Paulo?",
+                placeholder: "0",
+                exactMatch: "exatamente!",
+                offBy: (n) => `você errou por ${n.toLocaleString('pt-BR')} piscinas`,
+                poolCount: "piscinas em São Paulo",
+                poolArea: "área total das piscinas",
+                confidenceTitle: "intervalo de confiança",
+                confidenceInterval: "95%: [50555, 56173]",
+                methodologyTitle: "metodologia",
+                methodologyText: "As piscinas foram contadas usando imagens aéreas do GeoSampa com um modelo de segmentação YOLO11 treinado para esse projeto. As imagens são de 2020. A contagem inclui apenas piscinas externas e visíveis do céu, apenas no município de São Paulo.",
+                sayHiTitle: "manda um oi",
+                invalidNumber: "Por favor, insira um número válido",
+                poolCountNumber: "53.216",
+                poolAreaNumber: "1,49"
+            }
+        };
+
+        const t = translations[isPortuguese ? 'pt' : 'en'];
+
+        // Apply translations
+        document.getElementById('landing-title').textContent = t.title;
+        document.getElementById('guess-input').placeholder = t.placeholder;
+        document.getElementById('pool-count-number').textContent = t.poolCountNumber;
+        document.getElementById('pool-count-label').textContent = t.poolCount;
+        document.getElementById('pool-area-number').innerHTML = `${t.poolAreaNumber} km<sup>2</sup>`;
+        document.getElementById('pool-area-label').textContent = t.poolArea;
+        document.getElementById('confidence-title').textContent = t.confidenceTitle;
+        document.getElementById('confidence-interval').textContent = t.confidenceInterval;
+        document.getElementById('methodology-title').textContent = t.methodologyTitle;
+        document.getElementById('methodology-text').textContent = t.methodologyText;
+        document.getElementById('sayhi-title').textContent = t.sayHiTitle;
+
+        // Enable submit button when user types
+        guessInput.addEventListener('input', () => {
+            if (guessInput.value.length > 0) {
+                submitBtn.classList.add('enabled');
+            } else {
+                submitBtn.classList.remove('enabled');
+            }
+        });
+
+        document.getElementById('submit-btn').addEventListener('click', handleSubmit);
+
+        async function handleSubmit() {
+            const guess = parseInt(document.getElementById('guess-input').value);
+            
+            if (isNaN(guess) || guess < 0) {
+                alert(t.invalidNumber);
+                return;
+            }
+
+            const difference = Math.abs(guess - ACTUAL_COUNT);
+            
+            let message;
+            if (guess === ACTUAL_COUNT) {
+                message = t.exactMatch;
+            } else {
+                message = t.offBy(difference);
+            }
+
+            document.getElementById('result-message').textContent = message;
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('results-page').style.display = 'flex';
+        }
+
+        // Allow enter key to submit
+        document.getElementById('guess-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && guessInput.value.length > 0) {
+                handleSubmit();
+            }
+        });
+    </script>
+</body>
+</html>
