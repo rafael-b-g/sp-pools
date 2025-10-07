@@ -715,6 +715,8 @@ model.train(
 )
 ```
 
+You can find the model weights [here](https://github.com/rafael-b-g/sp-pools/blob/main/model.pt).
+
 ## Results
 It was finally time to count the pools.
 
