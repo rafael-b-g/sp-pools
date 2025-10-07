@@ -1,9 +1,8 @@
 # Swimming Pools in São Paulo
+
 **Rafael Guimarães**
-[LinkedIn](https://www.linkedin.com/in/rafa-bg/)
-[GitHub](https://github.com/rafael-b-g)
-[X](https://x.com/rafa_b_g)
-​[rafa.b.g@icloud.com](mailto:rafa.b.g@icloud.com)
+
+###### [LinkedIn](https://www.linkedin.com/in/rafa-bg/) • [GitHub](https://github.com/rafael-b-g) • [X/Twitter](https://x.com/rafa_b_g) • ​[rafa.b.g@icloud.com](mailto:rafa.b.g@icloud.com)
 
 ## TL;DR
 I counted the number of outdoor swimming pools in the city of São Paulo using computer vision and aerial imagery. Aerial images are from [GeoSampa](https://geosampa.prefeitura.sp.gov.br/)’s 2020 orthophotos. A [YOLO11-Segmentation](https://docs.ultralytics.com/tasks/segment/) model was trained and used as the pool detector.
@@ -209,7 +208,7 @@ I decided to use the IRGB (“I” for “Infrared”) images instead of the nor
 
 Here’s an example of RGB vs IRGB:
 
-![](README/IRGB_RGB.jpg)
+![IRGB_RGB](https://github.com/user-attachments/assets/a1d3ef5e-0b0e-4b13-b3ce-41dc94b1d394)
 
 Vegetation is red on IRGB because plants strongly reflect infrared light, while other objects stay mostly the same color.
 
@@ -655,6 +654,8 @@ names:
 if __name__ == '__main__':
     main()
 ```
+
+You can find the final dataset [here](https://github.com/rafael-b-g/sp-pools/tree/main/dataset_v2).
 
 ## Training
 ### Choosing the model
@@ -1157,7 +1158,7 @@ Total pool area = 2,083,342 m² = 2.08 km²
 ### Building the website
 With all the results in hand, I quickly built a simple website to present the final numbers and the heat map. I used Claude Sonnet 4.5 to build it.
 
-I used [Folium](https://python-visualization.github.io/folium/latest/) to create an interactive heat map using the pools’ coordinates. I hosted the website on GitHub Pages. You can find the website’s source code [here](https://github.com/rafael-b-g/sp-pools).
+I used [Folium](https://python-visualization.github.io/folium/latest/) to create an interactive heat map using the pools’ coordinates. I hosted the website on GitHub Pages.
 
 I didn’t want to buy a domain for this project, but I also didn’t want to use the default GitHub Pages URL. Since I already had the [iglu.website](https://iglu.website) domain for another project, I decided to use [pools.iglu.website](https://pools.iglu.website) to host this new website.
 
